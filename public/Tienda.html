@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Tienda</title>
+  <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://kit.fontawesome.com/fbbddd9141.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    table {
+      font-family: 'Roboto', sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      text-align: left;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    .image-column img {
+      width: 100px;
+      height: auto;
+    }
+  </style>
+  <script>
+    $(document).ready(function() {
+      $("#btn-comprar").click(function() {
+        var objetosSeleccionados = [];
+        $("input[name='objeto']:checked").each(function() {
+          objetosSeleccionados.push($(this).val());
+        });
+        if (objetosSeleccionados.length > 0) {
+          var mensaje = "Has seleccionado los siguientes objetos:\n";
+          mensaje += objetosSeleccionados.join("\n");
+          alert(mensaje);
+        } else {
+          alert("No has seleccionado ningún objeto.");
+        }
+      });
+
+      $.ajax({
+        url: "/dsaApp/users/objetos",
+        type: "GET",
+        dataType: "json",
+        success: function(data) {
+          var tableBody = $("#tabla-objetos tbody");
+          $.each(data, function(index, objeto) {
+            var row = $("<tr></tr>");
+            row.append($("<td></td>").text(objeto.nombre));
+            row.append($("<td></td>").text(objeto.descripcion));
+            row.append($("<td></td>").text(objeto.ataque !== undefined ? objeto.ataque : ""));
+            row.append($("<td></td>").text(objeto.defensa !== undefined ? objeto.defensa : ""));
+            row.append($("<td></td>").text(objeto.magia !== undefined ? objeto.magia : ""));
+            row.append($("<td class='image-column'></td>").append($("<img>").attr("src", objeto.imagen).attr("alt", objeto.nombre)));
+            row.append($("<td></td>").append($("<input>").attr("type", "checkbox").attr("name", "objeto").val(objeto.nombre)));
+            tableBody.append(row);
+          });
+        },
+        error: function(xhr, status, error) {
+          console.log("Error al obtener los objetos: " + error);
+        }
+      });
+    });
+  </script>
+</head>
+<body>
+<header>
+  <a href="index.html">Your Web Game Name</a>
+</header>
+<h1>Tienda</h1>
+<table id="tabla-objetos">
+  <thead>
+  <tr>
+    <th>Nombre</th>
+    <th>Descripción</th>
+    <th>Ataque</th>
+    <th>Defensa</th>
+    <th>Magia</th>
+    <th>Imagen</th>
+    <th>Seleccionar</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<button id="btn-comprar">Comprar</button>
+</body>
+</html>
