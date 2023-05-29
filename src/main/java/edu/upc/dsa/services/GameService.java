@@ -33,7 +33,7 @@ public class GameService {
             this.gm.addObjeto("ESPADA", "espada de doble mano forjada por herreros de rivendel", 15, 10, 0, "https://espadasdetoledo.com/images/stories/virtuemart/product/Battle_ready_sword.jpg");
             this.gm.addObjeto("POCION", "Pocion curativa", 20, 0, 10,"");
             this.gm.addObjeto("ESCUDO", "Proporciona defensa", 10, 0, 50, "");
-            this.gm.addObjeto("BASTON", "Pega ostias", 50, 100, 0, "");
+            this.gm.addObjeto("BASTON", "Pega ", 50, 100, 0, "");
         }
     }
     @POST
